@@ -1,26 +1,67 @@
-data = [] #建立一個空清單
-count = 0 #計數器
+data = []
+count = 0 
 
 with open('reviews.txt', 'r') as f:
-	for line in f: #一行一行讀取
+	for line in f: 
 		data.append(line)
-		count += 1  #count = count + 1 每讀一筆就加一
-		if count % 1000 == 0: #每一千筆就印出來, %是求餘數的,count和1000的餘數是0就印出來
-			print(len(data)) #資料的總筆數 = data的長度
+		count += 1 
+		if count % 1000 == 0:
+			print(len(data))
 
 print('檔案讀取完了, 總共有', len(data), '筆資料!')
 
-sum_len = 0  #總長度從0開始
-for d in data: #每一筆稱呼為d, data是清單裝著一百萬筆字串,每一個d就是一個字串,每一個字串可以用len求長度
-	sum_len = sum_len + len(d) #sum_len += len(d), 每一筆留言(字串)加上上一筆的長度總和存回目前的總筆數
-
+sum_len = 0  
+for d in data: 
+    sum_len = sum_len + len(d) 
 print('留言的平常度為', sum_len / len(data))
 
-#要知道總長度可以用 print(sum_len)
 
-new = []  #設一個新的空清單
-for d in data: #取用之前的data清單,每筆留言叫d
-	if len(d) < 100: #d的長度如果小於100
-		new.append(d) #一個一個裝入new清單裡
-print('一共有', len(new), '筆留言長度小於100!') #留言是英文,ex:help = 4個字
+new = []  
+for d in data: 
+    if len(d) < 100:
+        new.append(d) 
+print('一共有', len(new), '筆留言長度小於100!') 
+
+wc = {} #word_count
+for d in data:
+    words = d.split()
+    for word in words:
+        if word in wc:
+            wc[word] += 1
+        else:
+            wc[word] = 1  #新增新的key進wc字典
+
+for word in wc:
+    if wc[word] > 1000000:
+        print(word, wc[word])
+
+print(len(wc))
+print(wc['Allen'])
+
+while True:
+    word = input('請問你想查什麼字: ')
+    if word == 'q':
+        break
+    if word in wc:
+        print(word, '出現過的次數為', wc[word])
+    else:
+        print('這個字沒有出現過喔!')
+
+
+
+
+# #List Comprehension(快速寫法)
+# #output = [(number - 1) for number in reference if number % 2 == 0]
+# #				運算         變數         清單         篩選條件
+
+
+# # good = []
+# # for d in data:
+# # 	if 'good' in d: #只要有'good'就裝入清單裡
+# # 		good.append(d)
+# # print('一共有', len(good), '筆留言提到good!')  可以上下對照來看
+# good = [d for d in data if 'good' in d]
+# print(good)
+
+
 
